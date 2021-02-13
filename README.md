@@ -9,7 +9,7 @@
 ## Challenges
 
 - [QuickLab 1](./exercise1/challenge.md)
-
+- [QuickLab 2](./exercise2/challenge.md)
 
 ---
 
