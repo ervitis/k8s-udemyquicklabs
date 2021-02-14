@@ -1,0 +1,28 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: visitors-dashboard
+  name: visitors-frontend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: visitors
+      tier: frontend
+  template:
+    metadata:
+      labels:
+        app: visitors
+        tier: frontend
+    spec:
+      containers:
+        - name: visitors-frontend
+          image: jdob/visitors-webui:1.0.0
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 3000
+              name: visitors
+          env:
+            - name: REACT_APP_TITLE
+              value: "Visitors Dashboard"
