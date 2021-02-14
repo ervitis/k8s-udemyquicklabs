@@ -1,0 +1,19 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: visitors-backend-service
+  namespace: visitors-dashboard
+  labels:
+    app: visitors
+    tier: backend
+spec:
+  type: NodePort
+  ports:
+    - port: 8080
+      targetPort: 8080
+      nodePort: 30685
+      protocol: TCP
+  selector:
+    app: visitors
+    tier: backend
