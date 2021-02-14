@@ -1,0 +1,69 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mysql
+  namespace: visitors-dashboard
+spec:
+  selector:
+    matchLabels:
+      app: visitors
+      tier: mysql
+  replicas: 1
+  strategy:
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app: visitors
+        tier: mysql
+    spec:
+      containers:
+        - name: visitors-mysql
+          image: "library/mysql:5.7"
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 3306
+              name: mysql
+              protocol: TCP
+          livenessProbe:
+            exec:
+              command: [ "mysqladmin", "-u'root'", "-p${MYSQL_ROOT_PASSWORD}", "ping" ]
+            periodSeconds: 5
+            timeoutSeconds: 5
+            initialDelaySeconds: 40
+            failureThreshold: 3
+          resources:
+            requests:
+              cpu: 500m
+              memory: 1Gi
+            limits:
+              cpu: 750m
+              memory: 2Gi
+          volumeMounts:
+            - mountPath: /var/lib/mysql
+              name: mysql-vol
+          env:
+            - name: MYSQL_ALLOW_EMPTY_PASSWORD
+              value: "1"
+            - name: MYSQL_ROOT_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  key: rootpassword
+                  name: mysql-auth
+            - name: MYSQL_DATABASE
+              value: visitors_db
+            - name: MYSQL_USER
+              valueFrom:
+                secretKeyRef:
+                  key: username
+                  name: mysql-auth
+            - name: MYSQL_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  key: password
+                  name: mysql-auth
+      volumes:
+        - name: mysql-vol
+          persistentVolumeClaim:
+            claimName: mysql-pv-claim
