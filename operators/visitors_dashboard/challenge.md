@@ -11,3 +11,5 @@ Components:
 - web frontend in react
 - rest api django
 - database mysql
+
+Note: next release, use helm to deploy it
