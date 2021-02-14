@@ -11,6 +11,8 @@
 - [QuickLab 1](./exercise1/challenge.md)
 - [QuickLab 2](./exercise2/challenge.md)
 
+- [Visitors operators](./operators/visitors_dashboard/challenge.md)
+
 ---
 
 Create a pod called time-check in the dvl1987 namespace. This pod should run a container called time-check that uses the busybox image.
