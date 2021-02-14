@@ -1,0 +1,7 @@
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: visitors-dashboard
+  labels:
+    name: visitors-dashboard
