@@ -1,0 +1,7 @@
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: quicklabs3
+  labels:
+    name: quicklabs3
