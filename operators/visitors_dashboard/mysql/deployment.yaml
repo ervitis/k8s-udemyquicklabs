@@ -20,7 +20,7 @@ spec:
     spec:
       containers:
         - name: visitors-mysql
-          image: "library/mysql:5.7"
+          image: "library/mysql:8.0"
           imagePullPolicy: Always
           ports:
             - containerPort: 3306
@@ -28,7 +28,7 @@ spec:
               protocol: TCP
           livenessProbe:
             exec:
-              command: [ "mysqladmin", "-u'root'", "-p${MYSQL_ROOT_PASSWORD}", "ping" ]
+              command: ["mysqladmin", "ping"]
             periodSeconds: 5
             timeoutSeconds: 5
             initialDelaySeconds: 40
@@ -40,6 +40,13 @@ spec:
             limits:
               cpu: 750m
               memory: 2Gi
+          readinessProbe:
+            exec:
+              command: ["mysql", "-h", "127.0.0.1", "-e", "SELECT 1"]
+            failureThreshold: 3
+            timeoutSeconds: 5
+            initialDelaySeconds: 40
+            periodSeconds: 15
           volumeMounts:
             - mountPath: /var/lib/mysql
               name: mysql-vol
