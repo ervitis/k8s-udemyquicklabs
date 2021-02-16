@@ -1,0 +1,31 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-deploy
+  namespace: quicklabs4
+spec:
+  replicas: 4
+  selector:
+    matchLabels:
+      name: nginx-deploy
+  template:
+    metadata:
+      labels:
+        name: nginx-deploy
+    spec:
+      containers:
+        - name: nginx-deploy
+          imagePullPolicy: Always
+          image: nginx:1.16
+          ports:
+            - containerPort: 80
+          livenessProbe:
+            failureThreshold: 2
+            timeoutSeconds: 2
+            initialDelaySeconds: 3
+            periodSeconds: 7
+            tcpSocket:
+              port: 80
+  strategy:
+    type: RollingUpdate
