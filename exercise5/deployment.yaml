@@ -1,0 +1,55 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: redis
+  namespace: quicklabs5
+  labels:
+    name: redis
+    app: redis
+spec:
+  selector:
+    matchLabels:
+      app: redis
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: redis
+    spec:
+      nodeName: minikube
+      containers:
+        - name: redis
+          image: library/redis:alpine
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 6379
+          volumeMounts:
+            - mountPath: /redis-master-data
+              name: redis-master-data
+            - mountPath: /redis-master
+              name: redis-config
+          resources:
+            requests:
+              cpu: "0.2"
+          livenessProbe:
+            tcpSocket:
+              port: 6379
+            periodSeconds: 5
+            initialDelaySeconds: 5
+            timeoutSeconds: 5
+            failureThreshold: 2
+          readinessProbe:
+            exec:
+              command:
+                - redis-cli
+                - ping
+            initialDelaySeconds: 10
+            timeoutSeconds: 5
+            periodSeconds: 8
+      volumes:
+        - name: redis-config
+          configMap:
+            name: redis-config
+        - name: redis-master-data
+          emptyDir: {}
