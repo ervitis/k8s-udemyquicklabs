@@ -1,0 +1,35 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  labels:
+    run: nginx
+  name: nginx
+  namespace: quicklabs6
+spec:
+  containers:
+    - image: kodekloud/nginx
+      imagePullPolicy: IfNotPresent
+      name: nginx
+      ports:
+        - containerPort: 9080
+          protocol: TCP
+      readinessProbe:
+        failureThreshold: 3
+        httpGet:
+          path: /
+          port: 9080
+          scheme: HTTP
+        periodSeconds: 10
+        initialDelaySeconds: 5
+        successThreshold: 1
+        timeoutSeconds: 4
+      livenessProbe:
+        failureThreshold: 1
+        periodSeconds: 60
+        initialDelaySeconds: 10
+        timeoutSeconds: 3
+        exec:
+          command:
+            - ls
+            - /var/www/html/file_check
+      resources: { }
