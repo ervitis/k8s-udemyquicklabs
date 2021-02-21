@@ -1,0 +1,24 @@
+---
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: dice
+  namespace: quicklabs7
+  labels:
+    name: dice
+spec:
+  concurrencyPolicy: Forbid
+  startingDeadlineSeconds: 20
+  jobTemplate:
+    spec:
+      completions: 1
+      backoffLimit: 25
+      parallelism: 1
+      template:
+        spec:
+          containers:
+            - image: kodekloud/throw-dice
+              name: throw-dice
+              command: ["/bin/sh", "-c", "res=$(/throw-dice.sh) && [[ ${r} -eq 6 ]] && exit 0 || exit -1"]
+          restartPolicy: OnFailure
+  schedule: "*/1 * * * *"
