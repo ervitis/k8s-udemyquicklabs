@@ -15,6 +15,7 @@
 - [QuickLab 5](./exercise5/challenge.md)
 - [QuickLab 6](./exercise6/challenge.md)
 - [QuickLab 7](./exercise7/challenge.md)
+- [QuickLab 8](./exercise8/challenge.md)
 
 - [Visitors operators](./operators/visitors_dashboard/challenge.md)
 
