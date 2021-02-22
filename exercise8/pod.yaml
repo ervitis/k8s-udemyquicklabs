@@ -1,0 +1,23 @@
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  labels:
+    name: secret
+  name: secret
+  namespace: quicklabs8
+spec:
+  nodeName: minikube
+  containers:
+    - name: secret
+      image: busybox
+      imagePullPolicy: Always
+      command: ["bin/sh", "-c", "sleep 3600"]
+      volumeMounts:
+        - mountPath: /etc/secret-volume
+          name: secret-volume
+          readOnly: true
+  volumes:
+    - name: secret-volume
+      secret:
+        secretName: dotfile-secret
