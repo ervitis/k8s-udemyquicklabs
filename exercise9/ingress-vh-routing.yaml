@@ -1,0 +1,26 @@
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  namespace: quicklabs9
+  name: ingress-vh-routing
+spec:
+  rules:
+    - host: watch.ecom-store.com
+      http:
+        paths:
+          - backend:
+              service:
+                name: video-service
+                port:
+                  number: 30093
+            path: /video
+            pathType: Prefix
+    - host: apparels.ecom-store.com
+      http:
+        paths:
+          - backend:
+              service:
+                name: apparels-service
+            path: /wear
+            pathType: Prefix
